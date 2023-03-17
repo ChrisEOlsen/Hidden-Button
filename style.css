@@ -29,7 +29,6 @@ body {
   align-items: center;
   position: relative;
   transition: width 0.6s;
-  transition-timing-function: ease-in-out;
 }
 .faded-out {
   width: 0px;
