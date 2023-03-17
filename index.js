@@ -21,13 +21,18 @@ function createCells(length) {
     container.append(cell)
     stringBox.textContent = cellArr.join("")
   }
-  //Hidden button functionality
+  //Hidden button functionality (move this into for loop in order to animate)
   const hiddenButton = document.querySelectorAll(".hidden")
   hiddenButton.forEach(a => {
     a.addEventListener("click", () => {
       cellArr.splice(a.parentElement.id, 0, "")
       removeAllChildNodes(container)
       createCells(cellArr.length)
+      const findNew = document.getElementById(a.parentElement.id)
+      findNew.classList.add("faded-out")
+      requestAnimationFrame(() => {
+        findNew.classList.remove("faded-out")
+      })
     })
   })
   //Textarea functionality
@@ -38,7 +43,6 @@ function createCells(length) {
       stringBox.textContent = cellArr.join("")
     })
   })
-  //delete button functionality
 }
 
 function removeAllChildNodes(parent) {
