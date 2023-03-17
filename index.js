@@ -21,7 +21,7 @@ function createCells(length) {
     container.append(cell)
     stringBox.textContent = cellArr.join("")
   }
-  //Hidden button functionality (move this into for loop in order to animate)
+  //Hidden button functionality
   const hiddenButton = document.querySelectorAll(".hidden")
   hiddenButton.forEach(a => {
     a.addEventListener("click", () => {
