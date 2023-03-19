@@ -33,6 +33,9 @@ body {
 .faded-out {
   width: 0px;
 }
+.dragging {
+  opacity: 0.4;
+}
 
 .cellText {
   width: 40px;
@@ -61,4 +64,5 @@ body {
 .string {
   font-size: 36px;
   color: white;
+  font-family: monospace;
 }

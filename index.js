@@ -7,6 +7,8 @@ function createCells(length) {
   for (let i = 0; i < length; i++) {
     const cell = document.createElement("cell")
     cell.classList.add("cellBox")
+    cell.setAttribute("draggable", "true")
+    cell.setAttribute("ondragstart", "drag(event)")
     cell.id = i
     const createTextArea = document.createElement("textarea")
     createTextArea.textContent = cellArr[i]
@@ -28,11 +30,7 @@ function createCells(length) {
       cellArr.splice(a.parentElement.id, 0, "")
       removeAllChildNodes(container)
       createCells(cellArr.length)
-      const findNew = document.getElementById(a.parentElement.id)
-      findNew.classList.add("faded-out")
-      requestAnimationFrame(() => {
-        findNew.classList.remove("faded-out")
-      })
+      animate(a.parentElement.id, "faded-out")
     })
   })
   //Textarea functionality
@@ -51,4 +49,30 @@ function removeAllChildNodes(parent) {
   }
 }
 
+//animation function
+function animate(id, animation) {
+  const findNew = document.getElementById(id)
+  findNew.classList.add(animation)
+  requestAnimationFrame(() => {
+    findNew.classList.remove(animation)
+  })
+}
+
 createCells(cellArr.length)
+
+//drag and drop functions
+function allowDrop(ev) {
+  ev.preventDefault()
+}
+function drag(ev) {
+  ev.dataTransfer.setData("Text", ev.target.id)
+  ev.target.classList.add("dragging")
+}
+function drop(ev) {
+  var data = ev.dataTransfer.getData("Text")
+  var el = document.getElementById(data)
+  el.parentNode.removeChild(el)
+  cellArr.splice(el.id, 1)
+  removeAllChildNodes(container)
+  createCells(cellArr.length)
+}
