@@ -1,5 +1,6 @@
 const container = document.querySelector(".container")
 const stringBox = document.querySelector(".string")
+const dropArea = document.querySelector(".drop-area")
 
 cellArr = "abcd".split("")
 
@@ -58,8 +59,6 @@ function animate(id, animation) {
   })
 }
 
-createCells(cellArr.length)
-
 //drag and drop functions
 function allowDrop(ev) {
   ev.preventDefault()
@@ -67,12 +66,25 @@ function allowDrop(ev) {
 function drag(ev) {
   ev.dataTransfer.setData("Text", ev.target.id)
   ev.target.classList.add("dragging")
+  cellArr.length > 2
+    ? dropArea.classList.add("drop-visible")
+    : dropArea.classList.add("cannot-drop")
 }
 function drop(ev) {
+  if (cellArr.length < 3) return
   var data = ev.dataTransfer.getData("Text")
   var el = document.getElementById(data)
-  el.parentNode.removeChild(el)
   cellArr.splice(el.id, 1)
+  el.parentNode.removeChild(el)
+  removeAllChildNodes(container)
+  createCells(cellArr.length)
+  dropArea.classList.remove("drop-visible")
+}
+function falseDrop(ev) {
+  dropArea.className = "drop-area"
+  ev.target.classList.remove("dragging")
   removeAllChildNodes(container)
   createCells(cellArr.length)
 }
+
+createCells(cellArr.length)

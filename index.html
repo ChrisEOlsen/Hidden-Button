@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="style.css" />
     <title>Invisible button</title>
   </head>
-  <body ondrop="drop(event)" ondragover="allowDrop(event)">
+  <body ondrop="falseDrop(event)" ondragover="allowDrop(event)">
+    <div
+      class="drop-area"
+      ondrop="drop(event)"
+      ondragover="allowDrop(event)"
+    ></div>
     <div class="container"></div>
     <div class="string"></div>
   </body>
