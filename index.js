@@ -9,7 +9,6 @@ function createCells(length) {
     const cell = document.createElement("cell")
     cell.classList.add("cellBox")
     cell.setAttribute("draggable", "true")
-    cell.setAttribute("ondragstart", "drag(event)")
     cell.id = i
     const createTextArea = document.createElement("textarea")
     createTextArea.textContent = cellArr[i]
@@ -24,6 +23,40 @@ function createCells(length) {
     container.append(cell)
     stringBox.textContent = cellArr.join("")
   }
+  //Drag and drop functionality
+  const draggables = document.querySelectorAll(".cellBox")
+  let allowDrop = false
+  draggables.forEach(box => {
+    box.addEventListener("dragstart", () => {
+      box.classList.add("dragging")
+    })
+
+    box.addEventListener("dragend", e => {
+      if (allowDrop && cellArr.length > 2) {
+        container.removeChild(box)
+        cellArr.splice(box.id, 1)
+        removeAllChildNodes(container)
+        createCells(cellArr.length)
+        stringBox.textContent = cellArr.join("")
+        dropArea.className = "drop-area"
+        allowDrop = false
+      } else {
+        dropArea.className = "drop-area"
+        box.className = "cellBox"
+      }
+    })
+  })
+  dropArea.addEventListener("dragover", e => {
+    e.preventDefault()
+    cellArr.length > 2
+      ? dropArea.classList.add("drop-visible")
+      : dropArea.classList.add("cannot-drop")
+    allowDrop = true
+  })
+  dropArea.addEventListener("dragleave", () => {
+    dropArea.className = "drop-area"
+    allowDrop = false
+  })
   //Hidden button functionality
   const hiddenButton = document.querySelectorAll(".hidden")
   hiddenButton.forEach(a => {
@@ -57,34 +90,6 @@ function animate(id, animation) {
   requestAnimationFrame(() => {
     findNew.classList.remove(animation)
   })
-}
-
-//drag and drop functions
-function allowDrop(ev) {
-  ev.preventDefault()
-}
-function drag(ev) {
-  ev.dataTransfer.setData("Text", ev.target.id)
-  ev.target.classList.add("dragging")
-  cellArr.length > 2
-    ? dropArea.classList.add("drop-visible")
-    : dropArea.classList.add("cannot-drop")
-}
-function drop(ev) {
-  if (cellArr.length < 3) return
-  var data = ev.dataTransfer.getData("Text")
-  var el = document.getElementById(data)
-  cellArr.splice(el.id, 1)
-  el.parentNode.removeChild(el)
-  removeAllChildNodes(container)
-  createCells(cellArr.length)
-  dropArea.classList.remove("drop-visible")
-}
-function falseDrop(ev) {
-  dropArea.className = "drop-area"
-  ev.target.classList.remove("dragging")
-  removeAllChildNodes(container)
-  createCells(cellArr.length)
 }
 
 createCells(cellArr.length)
