@@ -32,7 +32,6 @@ function createCells(length) {
       dropArea.classList.add("drop-visible")
       currentId = box.id
     })
-
     box.addEventListener("dragend", e => {
       if (allowDrop && cellArr.length > 2) {
         container.removeChild(box)
@@ -56,18 +55,11 @@ function createCells(length) {
   }
   dropArea.addEventListener("dragover", e => {
     e.preventDefault()
-    if (cellArr.length > 2) {
-      dropArea.classList.add("drop-visible")
-      changeCell(0.3)
-    } else {
-      dropArea.classList.add("cannot-drop")
-    }
+    cellArr.length > 2 ? changeCell(0.3) : dropArea.classList.add("cannot-drop")
     allowDrop = true
   })
   dropArea.addEventListener("dragleave", () => {
-    dropArea.className = "drop-area"
     if (currentId != undefined) {
-      const boxID = document.getElementById(currentId)
       changeCell(1)
     }
     allowDrop = false
