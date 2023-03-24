@@ -30,12 +30,10 @@ body {
   align-items: center;
   position: relative;
   transition: width 0.6s;
+  cursor: move;
 }
 .faded-out {
   width: 0px;
-}
-.dragging {
-  opacity: 0.4;
 }
 .drop-area {
   height: 30vh;
@@ -52,10 +50,12 @@ body {
 .drop-visible {
   background-color: white;
   opacity: 0.3;
+  transition: opacity 0.6s;
 }
 .cannot-drop {
   background-color: red;
   opacity: 0.3;
+  transition: opacity 0.6s;
 }
 
 .cellText {

@@ -26,9 +26,11 @@ function createCells(length) {
   //Drag and drop functionality
   const draggables = document.querySelectorAll(".cellBox")
   let allowDrop = false
+  let currentId
   draggables.forEach(box => {
-    box.addEventListener("dragstart", () => {
-      box.classList.add("dragging")
+    box.addEventListener("dragstart", e => {
+      dropArea.classList.add("drop-visible")
+      currentId = box.id
     })
 
     box.addEventListener("dragend", e => {
@@ -37,24 +39,37 @@ function createCells(length) {
         cellArr.splice(box.id, 1)
         removeAllChildNodes(container)
         createCells(cellArr.length)
-        stringBox.textContent = cellArr.join("")
         dropArea.className = "drop-area"
         allowDrop = false
       } else {
         dropArea.className = "drop-area"
         box.className = "cellBox"
       }
+      currentId = undefined
     })
   })
+  function changeCell(opacity) {
+    if (currentId != undefined) {
+      const boxID = document.getElementById(currentId)
+      boxID.style.opacity = opacity
+    }
+  }
   dropArea.addEventListener("dragover", e => {
     e.preventDefault()
-    cellArr.length > 2
-      ? dropArea.classList.add("drop-visible")
-      : dropArea.classList.add("cannot-drop")
+    if (cellArr.length > 2) {
+      dropArea.classList.add("drop-visible")
+      changeCell(0.3)
+    } else {
+      dropArea.classList.add("cannot-drop")
+    }
     allowDrop = true
   })
   dropArea.addEventListener("dragleave", () => {
     dropArea.className = "drop-area"
+    if (currentId != undefined) {
+      const boxID = document.getElementById(currentId)
+      changeCell(1)
+    }
     allowDrop = false
   })
   //Hidden button functionality
